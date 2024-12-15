@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Company List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        div.inline {
+            color: black;
+            float: left;
+            padding: 5px 5px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        div.inline a.active {
+            background-color: #FBD603;
+            border:1px solid blue;
+        }
+
+        div.inline a:hover {
+            background-color: #FBD603;
+            border:1px solid darkred;
+        }
+    </style>
+
+</head>
+<body>
+<h1 class="text-center">LIST COMPANIES</h1>
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Company Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Web Url</th>
+            <th>About</th>
+            <th>Address</th>
+            <th>View Job</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="company : ${companyPage.content}">
+            <td th:text="${company.id}"></td>
+            <td th:text="${company.compName}"></td>
+            <td th:text="${company.phone}"></td>
+            <td th:text="${company.email}"></td>
+            <td th:text="${company.webUrl}"></td>
+            <td th:text="${company.about}"></td>
+            <td th:text="${company.address}"></td>
+            <td>
+                <a class="btn btn-primary" th:href="@{/{companyId}/job(companyId=${company.id})}">
+                    View detail
+                </a>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <div class="inline" th:if="${companyPage.totalPages > 0}">
+        <div class="inline" th:each="pageNumber : ${pageNumbers}">
+            <a th:href="@{/companies(size=${companyPage.size}, page=${pageNumber})}"
+               th:text="${pageNumber}"
+               th:class="${pageNumber == companyPage.number + 1} ? 'active'"></a>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

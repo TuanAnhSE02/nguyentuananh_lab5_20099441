@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Candidates</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f9;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            text-align: center;
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f1f1f1;
+        }
+
+        tr:hover {
+            background-color: #f0f0f0;
+        }
+
+        .btn-success, .btn-danger {
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .page {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .page a {
+            padding: 8px 16px;
+            margin: 0 5px;
+            border-radius: 4px;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .page a.active {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+
+        .page a:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<div th:switch="${candidates}">
+    <h2 th:case="null">No candidates yet!</h2>
+    <div th:case="*">
+        <h1 class="text-center">LIST CANDIDATES</h1>
+        <a class="btn btn-primary" href="/show-add-form">Insert</a>
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Full Name</th>
+                <th>DOB</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th colspan="2">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="candidate : ${candidates}">
+                <td th:text="${candidate.id}"></td>
+                <td th:text="${candidate.fullName}"></td>
+                <td th:text="${candidate.dob}"></td>
+                <td th:text="${candidate.address}"></td>
+                <td th:text="${candidate.phone}"></td>
+                <td th:text="${candidate.email}"></td>
+                <td><a class="btn btn-success" th:href="@{/show-edit-form/{id}(id=${candidate.id})}">Update</a></td>
+                <td><a class="btn btn-danger" th:href="@{/delete/{id}(id=${candidate.id})}">Delete</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Pagination (if any) -->
+<div class="page" th:if="${candidates}">
+    <a th:each="page : ${pages}" th:href="@{/candidates(page=${page})}" th:text="${page}" th:class="${page == currentPage} ? 'active'"></a>
+</div>
+
+</body>
+</html>

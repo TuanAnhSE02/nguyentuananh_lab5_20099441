@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <style>
+    /* Basic Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Body */
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f9fafb;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Header */
+    h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #2d3748;
+    }
+
+    /* Table Styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid #e2e8f0;
+    }
+
+    th {
+      background-color: #4a90e2;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    tr:nth-child(odd) {
+      background-color: #f7fafc;
+    }
+
+    tr:nth-child(even) {
+      background-color: #edf2f7;
+    }
+
+    tr:hover {
+      background-color: #f1f5f9;
+    }
+
+    /* Action Buttons */
+    .action-btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      cursor: pointer;
+      display: inline-block;
+      margin: 5px;
+    }
+
+    .action-btn.update {
+      background-color: #38b2ac;
+      color: white;
+      text-decoration: none;
+    }
+
+    .action-btn.update:hover {
+      background-color: #319795;
+    }
+
+    .action-btn.delete {
+      background-color: #e53e3e;
+      color: white;
+      text-decoration: none;
+    }
+
+    .action-btn.delete:hover {
+      background-color: #c53030;
+    }
+
+    /* Pagination */
+    .inline {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .inline a {
+      padding: 8px 16px;
+      margin: 0 5px;
+      border-radius: 6px;
+      color: #3182ce;
+      text-decoration: none;
+      border: 1px solid #3182ce;
+      font-size: 14px;
+    }
+
+    .inline a.active {
+      background-color: #3182ce;
+      color: white;
+      border-color: #3182ce;
+    }
+
+    .inline a:hover {
+      background-color: #ebf8ff;
+    }
+
+    /* Button Styling */
+    .btn-primary {
+      background-color: #4a90e2;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .btn-primary:hover {
+      background-color: #357ab7;
+    }
+  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>List Candidates</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+<div class="container">
+  <h1>LIST CANDIDATES</h1>
+  <div class="overflow-x-auto">
+    <a class="btn-primary" href="/show-add-form">Insert</a>
+    <table>
+      <thead>
+      <tr>
+        <th>Id</th>
+        <th>Full Name</th>
+        <th>DOB</th>
+        <th>Address</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th colspan="2">Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="candidate, iStat : ${candidatePage.content}"
+          th:style="${iStat.odd}"
+          th:alt-title="${iStat.even}? 'even' : 'odd'">
+        <td th:text="${candidate.id}"></td>
+        <td th:text="${candidate.fullName}"></td>
+        <td th:text="${candidate.dob}"></td>
+        <td th:text="${candidate.address}"></td>
+        <td th:text="${candidate.phone}"></td>
+        <td th:text="${candidate.email}"></td>
+        <td>
+          <a class="action-btn update" th:href="@{/edit/{id}(id=${candidate.id})}">Update</a>
+          <a class="action-btn delete" th:href="@{/delete/{id}(id=${candidate.id})}">Delete</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="inline" th:if="${candidatePage.totalPages > 0}" th:each="pageNumber : ${pageNumbers}">
+      <a th:href="@{/candidates(size=${candidatePage.size}, page=${pageNumber})}"
+         th:text="${pageNumber}" th:class="${pageNumber==candidatePage.number + 1} ? active"></a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
